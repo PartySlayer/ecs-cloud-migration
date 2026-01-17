@@ -1,0 +1,45 @@
+services:
+  fronty:
+    build: ./frontend
+    ports:
+      - "8080:80"
+    volumes:
+      - ./frontend:/usr/share/nginx/html
+    depends_on:
+      - becky
+
+  becky:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://user:pass@debby:5432/appdb
+    depends_on:
+      - debby
+
+  debby:
+    image: postgres:15
+    ports:
+     - "5432:5432"
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
+      POSTGRES_DB: appdb
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user"]
+      interval: 2s
+      retries: 10
+      timeout: 2s
+    #volumes:
+    #  - db_data:/var/lib/postgresql/data
+
+  ethan:
+    build: ./ethan
+    environment:              
+      - DB_HOST=debby
+      - DB_USER=user
+      - DB_PASS=pass
+      - DB_NAME=appdb
+    depends_on:
+      debby:
+        condition: service_healthy

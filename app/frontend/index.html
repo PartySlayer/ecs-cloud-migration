@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Demo 3-tier + Ethan</title>
+  <style>
+    body { font-family: sans-serif; margin: 2em; }
+    h1 { color: #333; }
+    #status { color: #666; font-style: italic; margin-bottom: 1em; }
+    ul { padding-left: 1.5em; }
+    li { margin: 0.2em 0; }
+  </style>
+</head>
+<body>
+  <h1>Becky: "We need these items for tonight dinner, could you please buy them?" </h1>
+  <div id="status">Loading...</div>
+  <ul id="items"></ul>
+
+  <script>
+    async function load() {
+      const status = document.getElementById("status");
+      const ul = document.getElementById("items");
+
+      try {
+        const res = await fetch("/api/items", { cache: "no-store" });
+        if (!res.ok) throw new Error(` Debby is sleeping, HTTP ${res.status}`);
+        const data = await res.json();
+
+        ul.innerHTML = "";
+        if (!data.items || data.items.length === 0) {
+          status.textContent = "No data... Ask Ethan";
+          ul.innerHTML = "<li><i>Empty?</i></li>";
+        } else {
+          status.textContent = `${data.items.length} elements:`;
+          data.items.forEach(i => {
+            const li = document.createElement("li");
+            li.textContent = i;
+            ul.appendChild(li);
+          });
+        }
+      } catch (err) {
+        status.textContent = `Error: ${err.message}`;
+        console.error(err);
+      }
+    }
+
+    load();
+    setInterval(load, 2000);
+  </script>
+</body>
+</html>
