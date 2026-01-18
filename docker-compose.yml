@@ -1,6 +1,6 @@
 services:
   fronty:
-    build: ./frontend
+    build: ./app/frontend
     ports:
       - "8080:80"
     volumes:
@@ -9,7 +9,7 @@ services:
       - becky
 
   becky:
-    build: ./backend
+    build: ./app/backend
     ports:
       - "8000:8000"
     environment:
@@ -34,7 +34,7 @@ services:
     #  - db_data:/var/lib/postgresql/data
 
   ethan:
-    build: ./ethan
+    build: ./app/ethan
     environment:              
       - DB_HOST=debby
       - DB_USER=user
