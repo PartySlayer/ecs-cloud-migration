@@ -1,6 +1,6 @@
 # ☁️ Da monolite locale a AWS ECS: Cloud Migration
 
-Questo progetto dimostra la migrazione di un'applicazione multi-tier da un ambiente DOcker Compose locale a un'architettura production-ready su **AWS ECS Fargate**, gestita via **Terraform**.
+Questo progetto dimostra la migrazione di un'applicazione multi-tier da un ambiente DOcker Compose locale a **AWS ECS Fargate**, gestita via **Terraform**.
 
 ## Architettura
 
